@@ -27,8 +27,9 @@ public class AprilTag {
      * This is Ethan.  I wrote this method to give the AprilTag object a reference to the
      * hardware map and telemetry so that the object can find the webcam and send info
      * to the driver hub without the OpMode needing to provide this code.
-     * @param hardwareMap
-     * @param telemetry
+     * @param hardwareMap OpMode must pass the hardwareMap so that webcam can be initialized.
+     * @param telemetry OpMode must pass the telemetry object so that AprilTag can send
+     *                  telemetry to Driver Hub.
      */
       public void Initialize(HardwareMap hardwareMap, Telemetry telemetry) {
           this.telemetry = telemetry;
@@ -42,10 +43,7 @@ public class AprilTag {
                 .build();
 
         // Get the webcam from the Robot Configuration.
-        WebcamName webcam = hardwareMap.get(
-                WebcamName.class,
-                "Webcam 1"
-        );
+        WebcamName webcam = hardwareMap.get(WebcamName.class,"Webcam 1");
 
         // Create the VisionPortal.
         visionPortal = new VisionPortal.Builder()
@@ -97,7 +95,7 @@ public class AprilTag {
 
             // Position relative to the camera.
             if (detection.ftcPose != null) {
-
+/*
                 telemetry.addData(
                         "X",
                         "%.1f inches",
@@ -115,7 +113,7 @@ public class AprilTag {
                         "%.1f inches",
                         detection.ftcPose.z
                 );
-
+*/
                 telemetry.addData(
                         "Range",
                         "%.1f inches",
@@ -153,7 +151,6 @@ public class AprilTag {
 
     /**
      * Return the first detected AprilTag with the requested ID.
-     *
      * Returns null if the tag isn't currently visible.
      */
     public AprilTagDetection getTag(int tagId) {
@@ -193,6 +190,17 @@ public class AprilTag {
         }
 
         return aprilTagProcessor.getDetections().size();
+    }
+
+    /**
+     * Boolean to indicate if any tags are visible
+     */
+    public boolean areAnyTagsVisible() {
+
+        if (aprilTagProcessor == null) {
+            return false;
+        }
+        return !aprilTagProcessor.getDetections().isEmpty();
     }
 
     /**
