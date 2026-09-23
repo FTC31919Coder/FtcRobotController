@@ -67,7 +67,7 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-
+@SuppressLint("DefaultLocale")
 public class AprilTag {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
@@ -106,11 +106,21 @@ public class AprilTag {
     telemetry.addLine("AprilTag Initialization complete");
     telemetry.update();
 }
-    @SuppressLint("DefaultLocale")
-    /*
-      This method sends AprilTag data to the driver hub
+
+    /**
+     *  This method sends AprilTag data to the driver hub via telemetry and also
+     *  returns an AprilTag cluster detection object.
+     *  The cluster names for BIOBUZZ are;
+     *  <p>
+     *  RED AUDIENCE
+     *  <p>
+     *  RED SCORING
+     *  <p>
+     *  BLUE AUDIENCE
+     *  <p>
+     *  BLUE SCORING
      */
-public AprilTagClusterDetection DisplayInfo(Telemetry telemetry) {
+public AprilTagClusterDetection GetInfo(Telemetry telemetry) {
     AprilTagClusterDetection clusterDet = null;
     List<AprilTagDetection> currentDetections = aprilTag.getDetections();
     telemetry.addData("# AprilTags Detected", currentDetections.size());
@@ -144,10 +154,17 @@ public AprilTagClusterDetection DisplayInfo(Telemetry telemetry) {
     telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
     telemetry.addLine("RBE = Range, Bearing & Elevation");
     telemetry.update();
-
-    // Save more CPU resources when camera is no longer needed.
-    visionPortal.close();
-        return clusterDet;
+    return clusterDet;
 }
 
+    /** This method closes the vision portal save CPU resources.
+     *
+     */
+    public void Close() {
+        if (visionPortal != null) {
+            // Save more CPU resources when camera is no longer needed.
+            visionPortal.close();
+            visionPortal = null;
+        }
+    }
 }   // end class

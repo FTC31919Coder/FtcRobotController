@@ -66,7 +66,7 @@ public class T_BIOBUZZ_Original extends OpMode{
     @Override
     public void loop()
     {
-        AprilTagClusterDetection detectedCluster = aprilTagController.DisplayInfo(telemetry);
+        AprilTagClusterDetection detectedCluster = aprilTagController.GetInfo(telemetry);
         mecanumDrive.Activate(gamepad1);
         pinPointOdometry.Activate();
     }
