@@ -32,6 +32,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
+
 
 /*
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -43,7 +45,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @TeleOp(name="Robot: T_BIOBUZZ_Original", group="Robot")
 //@Disabled
 public class T_BIOBUZZ_Original extends OpMode{
-   // AprilTag aprilTagController = new AprilTag();
+    AprilTag aprilTagController = new AprilTag();
     MecanumDrive mecanumDrive = new MecanumDrive();
     PinPointOdometry pinPointOdometry = new PinPointOdometry();
 
@@ -51,7 +53,7 @@ public class T_BIOBUZZ_Original extends OpMode{
     @Override
     public void init()
     {
-       // aprilTagController.Initialize(hardwareMap,telemetry);
+        aprilTagController.Initialize(hardwareMap,telemetry);
         mecanumDrive.Initialize(hardwareMap);
         pinPointOdometry.Initialize(hardwareMap,0,
                                    0,0);
@@ -64,7 +66,7 @@ public class T_BIOBUZZ_Original extends OpMode{
     @Override
     public void loop()
     {
-      //  aprilTagController.displayInfo();
+        AprilTagClusterDetection detectedCluster = aprilTagController.DisplayInfo(telemetry);
         mecanumDrive.Activate(gamepad1);
         pinPointOdometry.Activate();
     }
