@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.annotation.SuppressLint;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -240,6 +242,7 @@ public class AprilTagTest extends LinearOpMode {
     /**
      * Add telemetry about AprilTag detections.
      */
+    @SuppressLint("DefaultLocale")
     private void telemetryAprilTag() {
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -247,23 +250,17 @@ public class AprilTagTest extends LinearOpMode {
 
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null) {
-                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                // Only use tags that don't have Obelisk in them
-                if (!detection.metadata.name.contains("Obelisk")) {
-                    telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)",
-                            detection.robotPose.getPosition().x,
-                            detection.robotPose.getPosition().y,
-                            detection.robotPose.getPosition().z));
-                    telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)",
-                            detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
-                            detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
-                            detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
-                }
-            } else {
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
-            }
+                telemetry.addLine(String.format("\n==== (ID %d)", detection.id));
+
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)",
+                                  detection.robotPose.getPosition().x,
+                                  detection.robotPose.getPosition().y,
+                                  detection.robotPose.getPosition().z));
+
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)",
+                                  detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
+                                  detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
+                                  detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
         }   // end for() loop
 
         // Add "key" information to telemetry
