@@ -92,6 +92,7 @@ public class AprilTag {
     public void Initialize (HardwareMap hardwareMap, Telemetry telemetry)
 {
     telemetry.addLine("AprilTag Initialization start");
+    telemetry.update();
     // Create the AprilTag processor the easy way.
     aprilTag = AprilTagProcessor.easyCreateWithDefaults();
 
