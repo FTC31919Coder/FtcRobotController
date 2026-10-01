@@ -77,10 +77,10 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
      * choose to declare these variables inside the mecanumDrive() function, instead we declare them
      * here so that we can access them in our main loop for telemetry.
      */
-    double leftFrontPower;
-    double rightFrontPower;
-    double leftBackPower;
-    double rightBackPower;
+   // double leftFrontPower;
+   // double rightFrontPower;
+   // double leftBackPower;
+   // double rightBackPower;
 
     // Create a variable to set to the intake.
     double intakePower;
@@ -205,8 +205,8 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
         /*
          * Show motor powers on the Driver Station via telemetry.
          */
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
-        telemetry.addData("Triggers", "left (%.2f, right (%.2f)",gamepad1.left_trigger, gamepad1.right_trigger);
+       // telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
+       // telemetry.addData("Triggers", "left (%.2f, right (%.2f)",gamepad1.left_trigger, gamepad1.right_trigger);
     }
 
     /*
