@@ -22,8 +22,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -53,11 +51,9 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
 
     // Declare OpMode members.
     private DcMotorEx launcher = null;
-    private DcMotor intake = null;
-    private CRServo leftIntakeServo = null;
-    private CRServo rightIntakeServo = null;
     private CRServo windmillServo = null;
-    private MecanumDrive mecanumDrive = new MecanumDrive();
+    private final MecanumDrive mecanumDrive = new MecanumDrive();
+    private final Intake intake = new Intake();
 
     /*
      * These two variables are used to control the velocity of the launcher motor.
@@ -77,10 +73,6 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
      * choose to declare these variables inside the mecanumDrive() function, instead we declare them
      * here so that we can access them in our main loop for telemetry.
      */
-   // double leftFrontPower;
-   // double rightFrontPower;
-   // double leftBackPower;
-   // double rightBackPower;
 
     // Create a variable to set to the intake.
     double intakePower;
@@ -98,21 +90,12 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
          */
 
         mecanumDrive.Initialize(hardwareMap);
-        intake = hardwareMap.get(DcMotor.class, "intake");
+        intake.Initialize(hardwareMap);
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
         windmillServo = hardwareMap.get(CRServo.class, "windmillServo");
-        leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
-        rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");
-
-         /*
-         * Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to
-         * slow down much faster when it is coasting. This creates a much more controllable
-         * drivetrain. As the robot stops much quicker.
-         */
-        intake.setZeroPowerBehavior(BRAKE);
 
         /*
-         * Here we set our launcher to the RUN_USING_ENCODER runmode.
+         * Here we set our launcher to the RUN_USING_ENCODER run mode.
          * If you notice that you have no control over the velocity of the motor, it just jumps
          * right to a number much higher than your set point, make sure that your encoders are plugged
          * into the port right beside the motor itself. And that the motors polarity is consistent
@@ -125,15 +108,12 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
         /*
          * set Feeders to an initial value to initialize the servo controller
          */
-        leftIntakeServo.setPower(0);
-        rightIntakeServo.setPower(0);
         windmillServo.setPower(0);
 
         /*
          * Much like our drivetrain motors, we set the right intake servo to reverse so that both
          * servos work to pull elements into the intake.
          */
-        rightIntakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
         windmillServo.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
@@ -186,21 +166,11 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
          * allow us to avoid setting the same motors/servos power more than once per loop. That can
          * create erratic behavior.
          */
-        intakePower = gamepad1.right_trigger - gamepad1.left_trigger;
+        intake.SetIntakePower(gamepad1);
 
         launch();
 
-        /*
-         * Here we set our intake motor and servos to their intake power. The order of operations
-         * here is important though. The gamepad triggers define the starting point for the intake
-         * power variable in each loop of our code, but inside our launch function we also sometimes
-         * change the intake power. So we need to give our launch function a chance to modify the
-         * variable before we write it to our motor and servos.
-         */
 
-        intake.setPower(intakePower);
-        leftIntakeServo.setPower(intakePower);
-        rightIntakeServo.setPower(intakePower);
 
         /*
          * Show motor powers on the Driver Station via telemetry.
