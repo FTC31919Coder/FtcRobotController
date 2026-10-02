@@ -8,12 +8,19 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+/*
+This class manages the intake mechanism of the BIOBUZZ StarterBot
+ */
 public class Intake {
 
     private DcMotor intakeDCMotor = null;
     private CRServo leftIntakeServo = null;
     private CRServo rightIntakeServo = null;
 
+    private double Power;
+
+    //Constructor method; not currently used
     public Intake ()
     {
 
@@ -50,7 +57,7 @@ public class Intake {
 
     }
 
-    public void SetIntakePower (Gamepad gamepad)
+    public void Activate (Gamepad gamepad, Telemetry telemetry)
     {
         /*
          * Set the intake power variable to equal the right trigger, minus the left trigger.
@@ -64,7 +71,7 @@ public class Intake {
          * allow us to avoid setting the same motors/servos power more than once per loop. That can
          * create erratic behavior.
          */
-        double Power = gamepad.right_trigger - gamepad.left_trigger;
+        Power = gamepad.right_trigger - gamepad.left_trigger;
         /*
          * Here we set our intake motor and servos to their intake power. The order of operations
          * here is important though. The gamepad triggers define the starting point for the intake
@@ -77,5 +84,29 @@ public class Intake {
         leftIntakeServo.setPower(Power);
         rightIntakeServo.setPower(Power);
     }
+    public void SetPower (double PowerLevel)
+    {
+    /* Set the intake power to a power level specified programmatically
 
+     */
+    intakeDCMotor.setPower(PowerLevel);
+    leftIntakeServo.setPower(PowerLevel);
+    rightIntakeServo.setPower(PowerLevel);
+
+    }
+    public void IncreasePower (double powerLevelIncrease, Telemetry telemetry)
+    {
+        /* Increase the intake power by a power level specified programmatically
+
+         */
+        telemetry.addData("Intake Motor Power at beginning of Increase Power",
+                          "%.2f", Power);
+        telemetry.addLine();
+        telemetry.update();
+
+        double PowerLevel = Power + powerLevelIncrease;
+        intakeDCMotor.setPower(PowerLevel);
+        leftIntakeServo.setPower(PowerLevel);
+        rightIntakeServo.setPower(PowerLevel);
+    }
 }

@@ -152,7 +152,6 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
          * we invert it before passing it to the function.
          */
         mecanumDrive.Activate(gamepad1);
-        //mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
         /*
          * Set the intake power variable to equal the right trigger, minus the left trigger.
@@ -166,11 +165,9 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
          * allow us to avoid setting the same motors/servos power more than once per loop. That can
          * create erratic behavior.
          */
-        intake.SetIntakePower(gamepad1);
+        intake.Activate(gamepad1, telemetry);
 
         launch();
-
-
 
         /*
          * Show motor powers on the Driver Station via telemetry.
@@ -192,7 +189,7 @@ public class T_BIOBUZZ_Starterbot extends OpMode {
          * held down, and false if it is not. Notably, this will continue to be true for every
          * cycle of our code that the driver holds down that bumper.
          * The first step of our launch() function is checking to see if the user is currently
-         * holding down the right gamepad. If they are, then we want to start spinning up the launcher.
+         * holding down the right bumper. If they are, then we want to start spinning up the launcher.
          * Otherwise, we start spinning the launcher down.
          */
         if (gamepad1.right_bumper) {
